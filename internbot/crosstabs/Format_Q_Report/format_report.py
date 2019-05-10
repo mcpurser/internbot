@@ -3,6 +3,7 @@ from openpyxl.styles.borders import Border, Side
 from openpyxl.styles import PatternFill, Font, Alignment
 from openpyxl.drawing.image import Image
 from collections import OrderedDict
+import os
 
 class QParser(object):
 
@@ -102,9 +103,9 @@ class QParser(object):
         sheet["D1"].fill = self.__header_fill
 
         if self.__is_qualtrics:
-            logo = Image("templates_images/QLogo.png")
+            logo = Image(os.path.expanduser("~/Documents/internbot_v0.0/dist/internbot/templates_images/QLogo.png"))
         else:
-            logo = Image("templates_images/y2_xtabs.png")
+            logo = Image(os.path.expanduser("~/Documents/internbot_v0.0/dist/internbot/templates_images/y2_xtabs.png"))
         sheet.add_image(logo, "D1")
 
         sheet["A2"].font = self.__font_bold
@@ -273,9 +274,9 @@ class QParser(object):
         # add logos
         current_cell = "%s%s" % (self.__extend_alphabet[current_col - 3], str(current_row))
         if self.__is_qualtrics:
-            logo = Image("templates_images/QLogo.png")
+            logo = Image(os.path.expanduser("~/Documents/internbot_v0.0/dist/internbot/templates_images/QLogo.png"))
         else:
-            logo = Image("templates_images/y2_xtabs.png")
+            logo = Image(os.path.expanduser("~/Documents/internbot_v0.0/dist/internbot/templates_images/y2_xtabs.png"))
         sheet.add_image(logo, current_cell)
 
         # figure out where the base description of table will be added

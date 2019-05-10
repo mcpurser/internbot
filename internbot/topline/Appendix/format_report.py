@@ -5,6 +5,7 @@ from openpyxl.drawing.image import Image
 from docx import Document
 from docx.shared import Inches
 from collections import OrderedDict
+import os
 
 class SSAppendixBuilder(object):
 
@@ -98,9 +99,9 @@ class SSAppendixBuilder(object):
         sheet["C1"].fill = self.__header_fill
 
         if self.__is_qualtrics:
-            logo = Image("templates_images/QLogo.png")
+            logo = Image(os.path.expanduser("~/Documents/internbot_v0.0/dist/internbot/templates_images/QLogo.png"))
         else:
-            logo = Image("templates_images/y2_xtabs.png")
+            logo = Image(os.path.expanduser("~/Documents/internbot_v0.0/dist/internbot/templates_images/y2_xtabs.png"))
         sheet.add_image(logo, "C1")
 
     def write_question(self, question, sheet):

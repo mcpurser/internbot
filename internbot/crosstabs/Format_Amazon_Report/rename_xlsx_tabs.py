@@ -3,6 +3,7 @@ from openpyxl.styles.borders import Border, Side
 from openpyxl.styles import PatternFill, Font, Alignment
 from openpyxl.drawing.image import Image
 import csv
+import os
 
 class RenameTabs(object):
 
@@ -113,7 +114,7 @@ class RenameTabs(object):
 
         toc_sheet.column_dimensions['C'].hidden= True
 
-        logo = Image("templates_images/Old_QLogo.png")
+        logo = Image(os.path.expanduser("~/Documents/internbot_v0.0/dist/internbot/templates_images/Old_QLogo.png"))
         toc_sheet.add_image(logo, "B2")
 
     def write_table_of_contents(self, path_to_tables, toc_sheet):

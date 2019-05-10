@@ -238,8 +238,8 @@ window.geometry("%dx%d+%d+%d" % (window_width, window_height, mov_x, mov_y))
 
 window['background'] = 'white'
 
-y2_logo = "templates_images/Y2Logo.gif"
-help_bot = "templates_images/Internbot.gif"
+y2_logo = "~/Documents/internbot_v0.0/dist/internbot/templates_images/Y2Logo.gif"
+help_bot = "~/Documents/internbot_v0.0/dist/internbot/templates_images/Internbot.gif"
 bot_render = Tkinter.PhotoImage(file=help_bot)
 logo_render = Tkinter.PhotoImage(file= y2_logo)
 logo_label = Tkinter.Label(window, image=logo_render, borderwidth=0, highlightthickness=0, relief=Tkinter.FLAT, padx=50)
