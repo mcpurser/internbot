@@ -36,6 +36,7 @@ class Internbot:
         self.spss = gui_windows.SPSSCrosstabsView(self.__window, mov_x, mov_y, window_width, window_height, header_font, header_color, resources_filepath)
         self.q = gui_windows.QCrosstabsView(self.__window, mov_x, mov_y, window_width, window_height, header_font, header_color, bot_render, resources_filepath)
         self.appendix = gui_windows.AppendixView(self.__window, mov_x, mov_y, window_width, window_height, header_font, header_color, bot_render, resources_filepath)
+        self.pptx = gui_windows.PowerPointView(self.__window, mov_x, mov_y, window_width, window_height, header_font, header_color, bot_render, resources_filepath)
 
         #Button definitions
         button_frame =tkinter.Frame(self.__window)
@@ -46,11 +47,13 @@ class Internbot:
         btn_rnc = tkinter.Button(button_frame, text="RNC Reports", padx=4, width=20, height=3,command=self.rnc.rnc_menu, relief=tkinter.FLAT, highlightthickness=0)
         btn_terminal = tkinter.Button(button_frame, text="Terminal Window", padx=4, width=20, height=3, command=self.reopen_terminal_window, relief=tkinter.FLAT, highlightthickness=0)
         btn_quit = tkinter.Button(button_frame, text="Quit", padx=4, width=20, height=3,command=self.quit, relief=tkinter.GROOVE, highlightthickness=0)
+        btn_pptx = tkinter.Button(button_frame, text="Topline PowerPoint", padx=4, width=20, height=3, command=self.pptx.pptx_menu, relief=tkinter.FLAT, highlightthickness=0)
         btn_bot = tkinter.Button(button_frame, image=bot_render, padx=4, pady=10, width=158, height=45, borderwidth=0, highlightthickness=0, relief=tkinter.FLAT, command=self.main_help_window)
         btn_bot.pack(padx=5, pady=3, side=tkinter.TOP)
         btn_xtabs.pack(padx=5, side=tkinter.TOP, expand=True)
         btn_report.pack(padx=5, side=tkinter.TOP, expand=True)
         btn_appen.pack(padx=5, side=tkinter.TOP, expand=True)
+        btn_pptx.pack(padx=5, side=tkinter.TOP, expand=True)
         btn_rnc.pack(padx=5, side=tkinter.TOP, expand=True)
         btn_terminal.pack(padx=5, side=tkinter.TOP, expand=True)
         btn_quit.pack(padx=5, side=tkinter.TOP, expand=True)
@@ -143,7 +146,7 @@ class Internbot:
         width = 500
         height = 600
         self.term_window.geometry("%dx%d+%d+%d" % (
-            width, height, mov_x + window_width / 2 - width , mov_y + window_height / 2 - height/2))
+            width, height, mov_x + window_width / 2 - 2*width , mov_y + window_height / 2 - height/2))
 
         term_text = tkinter.Text(self.term_window, fg='white', height= 600, width=500, background=header_color, padx=5, pady=5)
         term_text.pack()
@@ -202,20 +205,16 @@ class Internbot:
         height = 250
         sft_window.geometry("%dx%d+%d+%d" % (width,height,mov_x + window_width / 2 - width / 2, mov_y + window_height / 2 - height / 2))
 
-        #message = "Please select crosstabs\nsoftware to use:\n"
-        message = "Crosstabs will be enabled \nin the next version"
+        message = "Please select crosstabs\nsoftware to use:\n"
         tkinter.Label(sft_window, text = message, font=header_font, fg=header_color).pack()
         btn_spss = tkinter.Button(sft_window, text="SPSS", command=self.spss.spss_crosstabs_menu, height=3, width=20)
-        btn_q = tkinter.Button(sft_window, text="Q Research", command=self.q.bases_window, height=3, width=20)
+        btn_q = tkinter.Button(sft_window, text="Q Research", command=self.q.qresearch_xtabs, height=3, width=20)
         btn_cancel = tkinter.Button(sft_window, text="Cancel", command=sft_window.destroy, height=3, width=20)
         btn_cancel.pack(side=tkinter.BOTTOM, expand=True)
         btn_q.pack(side=tkinter.BOTTOM, expand=True)
         btn_spss.pack(side=tkinter.BOTTOM, expand=True)
 
-        btn_q.config(state=tkinter.DISABLED)
-        btn_spss.config(state=tkinter.DISABLED)
-
-        sft_window.deiconify()
+        sft_window.deiconify()  
 
     def amazon_xtabs(self):
         """
@@ -264,9 +263,11 @@ class Internbot:
 
 window = tkinter.Tk()
 window.withdraw()
-window.title("Internbot (Version: 1.0.0)") # Internbot: Y2
+internbot_version = "1.1.0"
 
-resources_filepath = "/Library/internbot/1.0.0/internbot/templates_images/"
+window.title("Internbot (Version:"+ internbot_version + ")") # Internbot: Y2
+
+resources_filepath = os.path.expanduser("~/Documents/GitHub/internbot/internbot/templates_images/")
 
 if platform.system() == 'Windows':  # Windows
     window.iconbitmap(os.path.join(resources_filepath, 'y2.ico'))
@@ -275,7 +276,7 @@ screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
 mov_x = screen_width / 2 - 300
 mov_y = screen_height / 2 - 200
-window_height = 450
+window_height = 500
 window_width = 600
 window.geometry("%dx%d+%d+%d" % (window_width, window_height, mov_x, mov_y))
 window['background'] = 'white'
@@ -304,7 +305,7 @@ def quit():
 window.bind('<Escape>', quit)
 window.protocol("WM_DELETE_WINDOW", quit)
 
-internbot_version = "1.0.0"
+
 
 window.deiconify()
 Internbot(window)
