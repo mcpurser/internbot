@@ -267,7 +267,7 @@ internbot_version = "1.1.0"
 
 window.title("Internbot (Version:"+ internbot_version + ")") # Internbot: Y2
 
-resources_filepath = os.path.expanduser("/Library/internbot/1.1.0/templates_images/Old_QLogo.png")
+resources_filepath = os.path.expanduser("/Library/internbot/1.1.0/internbot/templates_images/")
 
 if platform.system() == 'Windows':  # Windows
     window.iconbitmap(os.path.join(resources_filepath, 'y2.ico'))
