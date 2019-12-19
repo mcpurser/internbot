@@ -460,11 +460,18 @@ class DocumentView(BoxLayout):
         self.__controller.build_document_report(questions, self.__template_name, self.__save_filename, self.__other_template_path)
 
     def error_message(self, error):
-        label = Label(text=error)
-        label.font_family= "Y2"
-
-        popup = Popup(title="Something Went Wrong",
-        content=label,
-        size_hint=(.5, .8), pos_hint={'center_x': 0.5, 'center_y': 0.5})
-
+        error_content = BoxLayout()
+        error_label = Label(text=error, font_family="Y2")
+        error_content.add_widget(error_label)
+        
+        error_confirm_btn = Button(text="confirm", size_hint=(.2, .1))
+        error_content.add_widget(error_confirm_btn)
+        
+        popup=Popup(title="Something Went Wrong",
+        content=error_content,
+        auto_dismiss=False,
+        size_hint=(.5, .8),
+        pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        
+        error_confirm_btn.bind(on_press=popup.dismiss)
         popup.open()

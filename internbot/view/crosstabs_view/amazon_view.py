@@ -4,6 +4,7 @@ kivy.require('1.11.1')
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -37,27 +38,40 @@ class AmazonView(BoxLayout):
         def examples_link(instance, value):
             webbrowser.open("https://www.dropbox.com/sh/1mu0eogzluyy8s1/AACXSWbtpTP5nuXEANE3ud0qa?dl=0")
 
-        label = Label(text=help_text, markup=True)
+        label = Label(text=help_text, markup=True, halign='center')
         label.bind(on_ref_press=examples_link)
         label.font_family= "Y2"
 
         popup_layout.add_widget(label)
 
-        save_btn = Button(text='>', size_hint=(.2,.2))
-        save_btn.pos_hint={'center_x': 0.5, 'center_y': 0.5}
-        save_btn.bind(on_release=self.open_file_prompt_to_dialog)
-
-        popup_layout.add_widget(save_btn)
-
         popup = Popup(title="Select crosstab file",
         content=popup_layout,
-        size_hint=(.7, .5), pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        auto_dismiss=False,
+        size_hint=(.7, .45), pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        
+        btn_layout = GridLayout(cols=2, spacing=550,
+        padding=[25, 150, 25, 0], row_force_default = True, row_default_height = 60)
+        
+        cancel_btn = Button(text="cancel", size_hint=(.2, .2))
+        cancel_btn.bind(on_press=popup.dismiss)
+        
+        btn_layout.add_widget(cancel_btn)
+
+        
+        save_btn = Button(text='>', size_hint=(.2, .2))
+        save_btn.bind(on_release=self.open_file_prompt_to_dialog)
+
+        btn_layout.add_widget(save_btn)
+        
+        popup_layout.add_widget(btn_layout)
 
         return popup
 
     def create_open_file_dialog(self):
         chooser = BoxLayout()
         container = BoxLayout(orientation='vertical')
+        btn_layout = GridLayout(cols=2, spacing=750, size_hint = (1, .3),
+        padding=[25, 125, 25, 0], row_force_default = True, row_default_height = 60)
 
         def open_file(path, filename):
             try:
@@ -72,17 +86,27 @@ class AmazonView(BoxLayout):
         filechooser.bind(on_selection=lambda x: filechooser.selection)
         filechooser.path = os.path.expanduser("~")
         filechooser.filters = ["*.xlsx"]
-
-        open_btn = Button(text='open', size_hint=(.2,.1), pos_hint={'center_x': 0.5, 'center_y': 0.5})
-        open_btn.bind(on_release=lambda x: open_file(filechooser.path, filechooser.selection))
-
-        container.add_widget(filechooser)
-        container.add_widget(open_btn)
-        chooser.add_widget(container)
-
+        filechooser.size_hint = (1, .7)
+        
         file_chooser = Popup(title='Open file',
         content=chooser,
+        auto_dismiss=False,
         size_hint=(.9, .7 ), pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        
+        container.add_widget(filechooser)
+        
+        cancel_btn = Button(text="cancel", size_hint=(1,1))
+        cancel_btn.bind(on_press=file_chooser.dismiss)
+        
+        btn_layout.add_widget(cancel_btn)
+
+        open_btn = Button(text='open', size_hint=(1,1))
+        open_btn.bind(on_release=lambda x: open_file(filechooser.path, filechooser.selection))
+
+        btn_layout.add_widget(open_btn)
+        
+        container.add_widget(btn_layout)
+        chooser.add_widget(container)
 
         return file_chooser 
 
@@ -98,22 +122,34 @@ class AmazonView(BoxLayout):
         label.bind(on_ref_press=examples_link)
 
         popup_layout.add_widget(label)
-
-        save_btn = Button(text='>', size_hint=(.2,.2))
-        save_btn.pos_hint={'center_x': 0.5, 'center_y': 0.5}
-        save_btn.bind(on_release=self.toc_prompt_to_dialog)
-
-        popup_layout.add_widget(save_btn)
-
+        
         popup = Popup(title="Select table of contents file",
         content=popup_layout,
-        size_hint=(.7, .5), pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        auto_dismiss=False,
+        size_hint=(.7, .45), pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        
+        btn_layout = GridLayout(cols=2, spacing=550,
+        padding=[25, 150, 25, 0], row_force_default = True, row_default_height = 60)
+        
+        cancel_btn = Button(text="cancel", size_hint=(.2, .2))
+        cancel_btn.bind(on_press=popup.dismiss)
+        
+        btn_layout.add_widget(cancel_btn)
 
+        
+        save_btn = Button(text='>', size_hint=(.2, .2))
+        save_btn.bind(on_release=self.toc_prompt_to_dialog)
+
+        btn_layout.add_widget(save_btn)
+        
+        popup_layout.add_widget(btn_layout)
         return popup
 
     def create_toc_dialog(self):
         chooser = BoxLayout()
         container = BoxLayout(orientation='vertical')
+        btn_layout = GridLayout(cols=2, spacing=750, size_hint = (1, .3),
+        padding=[25, 125, 25, 0], row_force_default = True, row_default_height = 60)
 
         def open_file(path, filename):
             try:
@@ -127,17 +163,27 @@ class AmazonView(BoxLayout):
         filechooser.path = os.path.expanduser("~")
         filechooser.filters = ["*.csv"]
         filechooser.bind(on_selection=lambda x: filechooser.selection)
-
-        open_btn = Button(text='open', size_hint=(.2,.1), pos_hint={'center_x': 0.5, 'center_y': 0.5})
-        open_btn.bind(on_release=lambda x: open_file(filechooser.path, filechooser.selection))
-
-        container.add_widget(filechooser)
-        container.add_widget(open_btn)
-        chooser.add_widget(container)
+        filechooser.size_hint = (1, .7)
 
         file_chooser = Popup(title='Open file',
         content=chooser,
+        auto_dismiss=False,
         size_hint=(.9, .7 ), pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        
+        container.add_widget(filechooser)
+        
+        cancel_btn = Button(text="cancel", size_hint=(1,1))
+        cancel_btn.bind(on_press=file_chooser.dismiss)
+        
+        btn_layout.add_widget(cancel_btn)
+
+        open_btn = Button(text='open', size_hint=(1,1))
+        open_btn.bind(on_release=lambda x: open_file(filechooser.path, filechooser.selection))
+
+        btn_layout.add_widget(open_btn)
+        
+        container.add_widget(btn_layout)
+        chooser.add_widget(container)
 
         return file_chooser 
 
@@ -178,16 +224,26 @@ class AmazonView(BoxLayout):
         label.font_family= "Y2"
 
         popup_layout.add_widget(label)
-
-        save_btn = Button(text='>', size_hint=(.2,.2))
-        save_btn.pos_hint={'center_x': 0.5, 'center_y': 0.5}
-        save_btn.bind(on_release=self.save_file_prompt_to_dialog)
-
-        popup_layout.add_widget(save_btn)
-
+        
         popup = Popup(title="Select save file location",
         content=popup_layout,
-        size_hint=(.7, .5), pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        auto_dismiss=False,
+        size_hint=(.7, .45), pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        
+        btn_layout = GridLayout(cols=2, spacing=550,
+        padding=[25, 150, 25, 0], row_force_default = True, row_default_height = 60)
+        
+        cancel_btn = Button(text="cancel", size_hint=(.2, .2))
+        cancel_btn.bind(on_press=popup.dismiss)
+        
+        btn_layout.add_widget(cancel_btn)
+        
+        save_btn = Button(text='>', size_hint=(.2,.2))
+        save_btn.bind(on_release=self.save_file_prompt_to_dialog)
+
+        btn_layout.add_widget(save_btn)
+        
+        popup_layout.add_widget(btn_layout)
 
         return popup
 
@@ -262,18 +318,28 @@ class AmazonView(BoxLayout):
 
     def finish(self):
         self.save_file_dialog.dismiss()
-        try:
-            workbook = self.__controller.rename(self.__open_filename, self.__toc_filename)
-            self.__controller.highlight(workbook, self.__save_filename, self.__is_trended)
-        except:
-            self.error_message("Issue formatting report.")
+        #try:
+        workbook = self.__controller.rename(self.__open_filename, self.__toc_filename)
+        self.__controller.highlight(workbook, self.__save_filename, self.__is_trended)
+        #except:
+        #    self.error_message("Issue formatting report.")
 
     def error_message(self, error):
-        label = Label(text=error)
-        label.font_family= "Y2"
+    	error_content = BoxLayout()
+    	error_label = Label(text=error, font_family="Y2")
+    	error_content.add_widget(error_label)
+    	
+    	error_confirm_btn = Button(text="confirm", size_hint=(.2, .1))
+    	error_content.add_widget(error_confirm_btn)
+    	
+    	popup=Popup(title="Something Went Wrong",
+    	content=error_content,
+    	auto_dismiss=False,
+    	size_hint=(.5, .8),
+    	pos_hint={'center_x': 0.5, 'center_y': 0.5})
+    	
+    	error_confirm_btn.bind(on_press=popup.dismiss)
+    	popup.open()
+    	
 
-        popup = Popup(title="Something Went Wrong",
-        content=label,
-        size_hint=(.5, .8), pos_hint={'center_x': 0.5, 'center_y': 0.5})
-
-        popup.open()
+        
